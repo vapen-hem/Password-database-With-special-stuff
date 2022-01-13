@@ -14,6 +14,8 @@ Choose option 1 by typing 1 and hitting enter
 
 
 General info about each part of the program:
+
+
     1---See how to use this program: Basic info about the program, altough the information is kinda meh
 
     2---Create a Password: Creates a password, you can choose how many uppercase and lowercase letters you want invidualy, 
