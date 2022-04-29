@@ -17,26 +17,24 @@ def run_database():
     with open(ENTER_ENCK, 'rb') as mykey:
         key = mykey.read()
 
-    #Fernet is the encryption tool i use, it uses AES encryption
-    #ef has no meaning
+    #Fernet is the encryption tool i use, it uses AES encryption (More info in how to use option)
+    #ef has no meaning (Or maybe i just can't remember the meaning)
     ef = Fernet(key)
 
     #Opens and loads The database file
     with open('Database.txt', 'rb') as encrypted_file:
         encrypted = encrypted_file.read()
 
-    #Decrypts the database file
+    #This line take a variable that contains the database data, decrypts it and then decodes it
     decrypted = ef.decrypt(encrypted)
+    #Decoder line
+    decrypted_decoded = decrypted.decode('utf-8')
 
-    #Open and loads the database file in write mode
-    with open('Database.txt', 'wb') as decrypted_file:
-        decrypted_file.write(decrypted)
-    
     #Loop that stops you from fucking up
     while True:
         clear()
 
-        #WWYLTD = What Would You Like To Do, here you give the program the action you want ot perfrom
+        #WWYLTD = What Would You Like To Do, here you give the program the action you want to perfrom
         WWYLTD = input('What action would you like to preform?\n  1---See the database\n  2---Add to the database\n  3---Remove from the database\n  4---Exit\n\n')
         #If you pick 1, you get
         if WWYLTD == '1':
@@ -45,13 +43,12 @@ def run_database():
             #Another anti fuck up loop
             while True:
 
-                #Opens and loads database file in read mode
-                with open('Database.txt', 'r') as database:
-                    #Shows database file
-                    print(database.read())
+                #prints the database, so the user can view it
+                print(decrypted_decoded)
+                print('---------------------------')
                 #Exit database file
                 DB_exit = input('To leave, type exit :')
-                print('---------------------------')
+
                 if DB_exit == 'exit':
                     break
                 else:
@@ -63,57 +60,70 @@ def run_database():
         elif WWYLTD == '2':
             clear()
 
+            #Turns the database from a str to a list
+            decrypted_decoded_listed = decrypted_decoded.split('\n')
+
             WTA = input('Type what you want to add here :')
-            print('-----------------------')
-            with open('Database.txt', 'a') as database_write:
-                database_write.write(WTA + '\n')
+
+            #turns the datatbase from a list to a string
+            decrypted_decoded_listed.append(WTA)
+            backslash_n = '\n'
+            decrypted_decoded = backslash_n.join(decrypted_decoded_listed)
 
         #If you pick 3, you get
         elif WWYLTD =='3':
             clear()
 
-            #Opens and loads database file in read mode
-            with open('Database.txt', 'r') as fp:
-                lines = fp.readlines()
-                #Copies the database into a list
-                lines_temp = copy.copy(lines)
+            #This line turns the decrypted_decoded variable from a str to a list.
+            decrypted_decoded_listed = decrypted_decoded.split('\n')
 
             #Checks length of list, aka how many values are in the list
-            amount_lines = len(lines_temp)
+            amount_lines = len(decrypted_decoded_listed)
+            
 
             #Adds a number to each value in numerical order
             a = 0
             for i in range(amount_lines):
                 a = str(a)
-                var = lines_temp[i]
-                lines_temp[i] = a + var
+                var = decrypted_decoded_listed[i]
+                decrypted_decoded_listed[i] = a + var
                 a = int(a)
                 a = a+1
 
             #Prints the list to show you all values with their number
-            print(lines_temp)
+            print(decrypted_decoded_listed)
 
             #Linjer = lines in swedish, bc I am lazy and couldn't come up with a better var name
             #Here the user types the number of the value that should be removed from the database file
             linjer = int(input('What line should be removed? :'))
+
+            #This Code removes the line the user choose
+            del decrypted_decoded_listed[linjer]
+            newlista=[]
+            a = 0
+            b = 1
+            for i in decrypted_decoded_listed:
+                if a >= 10:
+                    b = 2
+                else:
+                    pass
+                newlista.append(i[b:])
+                a = a + 1
+            decrypted_decoded_listed = newlista
+
+            #This code turns the new edited version of the list (aka the database) from a list to a string, and replaces the old database in the RAM.
+            backslash_n = '\n'
+            decrypted_decoded = backslash_n.join(decrypted_decoded_listed)
             print('-----------------------')
-            #Opens and loads the database file to remove the line choosen above
-            with open('Database.txt', 'w') as fp:
-                for number, line in enumerate(lines):
-                    if number not in [linjer]:
-                        fp.write(line)
     
         #If you pick 4, you get
         elif WWYLTD == '4':
             clear()
-
-            #Re-encrypts the database file with the database key before shuting down the program
-            with open('Database.txt', 'rb') as original_file:
-                original = original_file.read()
             pek = Fernet(key)
-            encrypted = pek.encrypt(original)
+            decrypted_encoded = decrypted_decoded.encode('utf-8')
+            encrypted_encoded = pek.encrypt(decrypted_encoded)
             with open('Database.txt', 'wb') as encrypted_file:
-                encrypted_file.write(encrypted)
+                encrypted_file.write(encrypted_encoded)
             print('You are back at the main menu')
             print('---------------------------\n')
             break
