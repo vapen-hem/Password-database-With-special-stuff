@@ -8,11 +8,17 @@ Store passwords or other text based information "securely" (I higly doubt this p
 
 Showcase: https://www.youtube.com/watch?v=il-FryGU4Ik
 
+
 Recuired Libraries: (Libraries that come with python are not stated below)
+
 Numpy: https://numpy.org/install/
+
 Fernet: https://cryptography.io/en/latest/installation/
+
 sklearn: https://scikit-learn.org/stable/install.html
+
 Termcolor: https://pypi.org/project/termcolor/
+
 
 How To Use:
 First i recommend putting these files in a folder inly cointaing the program files, and to have a Encryprtion key on a USB-Stick.
