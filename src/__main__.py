@@ -1,8 +1,8 @@
 import os
 import termcolor
 import json
-from encryption import *
-from passwords import *
+from src.encryption import *
+from src.passwords import *
 
 database = None
 
