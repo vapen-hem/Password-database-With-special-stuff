@@ -96,16 +96,15 @@ def main():
             print("Exiting...")
 
         elif args[0] == "create":
-            if os.path.exists(f"storage/{args[1]}.json"):
+            if os.path.exists(f"/storage/{args[1]}.json"):
                 print("Database already exists.")
             else:
-                with open(f"storage/{args[1]}.json", "w") as f:
-                    database = {}
-                    json.dump(database, f)
+                with open(os.path.join("storage", f"{args[1]}.json"), "w") as f:
+                    f.write("{}")
                     print(f"Database {args[1]} created.")
 
         elif args[0] == "open":
-            if os.path.exists(f"storage/{args[1]}.json"):
+            if os.path.exists(os.path.join("storage", f"{args[1]}.json")):
                 database = args[1]
                 print(f"Database {args[1]} opened.")
             else:
