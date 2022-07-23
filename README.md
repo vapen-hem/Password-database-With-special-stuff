@@ -8,6 +8,23 @@ This program can:
 ## Showcase
 https://www.youtube.com/watch?v=il-FryGU4Ik
 
+## Installation
+
+1. Clone the repository
+    ```bash
+        git clone https://vapen-hem/Password-database-With-special-stuff
+    ```
+
+2. Install with poetry
+    ```bash
+        poetry install
+    ```
+
+3. Run using the following command.
+    ```bash
+        poetry run python src
+    ```
+
 ## Usage
 
 1. It is recommend to put these files in a folder only cointaing the program files, and to have an encryption key on a USB-Stick.
