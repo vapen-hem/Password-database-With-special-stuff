@@ -46,6 +46,7 @@ https://www.youtube.com/watch?v=il-FryGU4Ik
         "help - displays this help message."
         "encryption - opens the encryption interface."
         "exit - exits the program."
+        "settings - opens the settings interface"
 ```
 
 
