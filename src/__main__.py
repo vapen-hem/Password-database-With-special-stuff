@@ -34,7 +34,10 @@ def display_help():
 
 def main():
     global database
-    time.sleep(3)
+    with open("src/config.json", "r") as f:
+        config = json.load(f)
+
+    time.sleep(config["read_time"])
     os.system("color")
 
     display_help()
