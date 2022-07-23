@@ -1,11 +1,11 @@
 import os
+import time
 import termcolor
 import json
-from src.encryption import *
-from src.passwords import *
+from encryption import *
+from passwords import *
 
 database = None
-
 
 def display_help():
     banner = """
@@ -16,6 +16,8 @@ def display_help():
     ╚███╔███╔╝██║██║ ╚████║   ██║   ██║  ██║███████╗██║  ██║    ███████║   ██║   ╚██████╔╝██║  ██║██║  ██║╚██████╔╝███████╗
     ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
       Made by vapen_hem#1161 | https://github.com/vapen-hem
+      Contributors:
+        Akins | https://github.com/Akins2229 | nesta#4550
       Banner inspired by Ori#6338 | @therealOri_ | https://github.com/therealOri
     """
     print(termcolor.colored(banner, "magenta"))
@@ -30,8 +32,9 @@ def display_help():
 
 
 def main():
+    global database
+    time.sleep(5)
     os.system("color")
-    clear()
 
     display_help()
 
@@ -42,7 +45,7 @@ def main():
 
         def print_database():
             print(
-                "set - sets a value in the database. | set [key] [value]\n"
+                "set - sets a value in the database. | set [key] [value] [value_type]<str, int, dict, list>\n"
                 "get - gets a value from the database. | get [key]\n"
                 "delete - deletes a value from the database. | delete [key]\n"
                 "list - lists all keys in the database. | list\n"
@@ -61,34 +64,54 @@ def main():
                 print("You must open a database first.")
 
             else:
-                with open(f"storage/{database}.json", "w") as f:
-                    database = json.load(f)
+                with open(f"storage/{database}.json", "r+") as f:
+                    _database = json.load(f)
 
-                    database[args[1]] = args[2]
-                    # dump database
-                    json.dump(database, f)
+                    try:
+                        i = args[3]
+                    except:
+                        args[3] = "str"
+
+                    if args[3] == "str":
+                        value = str(args[2])
+
+                    elif args[3] == "int":
+                        value = int(args[2])
+
+                    elif args[3] == "dict":
+                        value = json.loads(args[2])
+                    
+                    elif args[3] == "list":
+                        value = list(args[2])
+
+                    else:
+                        value = args[2]
+
+                    _database[args[1]] = value 
+                with open(f"storage/{database}.json", "w+") as f:
+                    json.dump(_database, f)
 
         elif args[0] == "delete":
             if database == None:
                 print("You must open a database first.")
 
             else:
-                with open(f"storage/{database}.json", "w") as f:
-                    database = json.load(f)
+                with open(f"storage/{database}.json", "r+") as f:
+                    _database = json.load(f)
 
-                    del database[args[1]]
-                    # dump database
-                    json.dump(database, f)
+                    del _database[args[1]]
+                with open(f"storage/{database}.json", "w+") as f:
+                    json.dump(_database, f)
 
         elif args[0] == "get":
             if database == None:
                 print("You must open a database first.")
 
             else:
-                with open(f"storage/{database}.json", "w") as f:
-                    database = json.load(f)
+                with open(f"storage/{database}.json", "r") as f:
+                    _database = json.load(f)
 
-                    print(database[args[1]])
+                    print(_database[args[1]])
 
         elif args[0] == "help":
             print_database()
@@ -121,9 +144,9 @@ def main():
             if database == None:
                 print("You must open a database first.")
             else:
-                with open(f"storage/{database}.json", "w") as f:
-                    database = json.load(f)
-                    print(database.keys())
+                with open(f"storage/{database}.json", "r") as f:
+                    _database = json.load(f)
+                    print(_database.keys())
 
         else:
             print("Invalid command.")
