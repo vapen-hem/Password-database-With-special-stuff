@@ -28,12 +28,13 @@ def display_help():
         "help - displays this help message.\n"
         "encryption - opens the encryption interface.\n"
         "exit - exits the program."
+        "settings - opens the settings interface."
     )
 
 
 def main():
     global database
-    time.sleep(5)
+    time.sleep(3)
     os.system("color")
 
     display_help()
@@ -218,6 +219,32 @@ def main():
     elif args[0] == "exit":
         print("Exiting...")
         exit(0)
+    
+    elif args[0] == "settings":
+        def print_settings():
+            print(
+                "set_read_time - sets the time in seconds before the start menu is brought back up after command exec. | [seconds]\n"
+                "help - displays this help message.\n"
+                "exit - exits the program."
+            )
+
+        print_settings()
+        choice = input("Enter your choice: ")
+        args = choice.split(" ")
+
+        if args[0] == "set_read_time":
+            with open("src/config.json", "r+") as f:
+                config = json.load(f)
+                config["read_time"] = int(args[1])
+
+            with open("src/config.json", "w+") as f:
+                json.dump(config, f)
+
+        elif args[0] == "help":
+            print_settings()
+
+        elif args[0] == "exit":
+            print("Exiting...")
 
     else:
         print("Invalid command.")
